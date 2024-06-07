@@ -20,8 +20,8 @@ This project presents a useful and flexible Bangla Retrieval-Augmented Generatio
 1. **Install Python:** Ensure Python is installed on your system. Download from [python.org](https://www.python.org/).
 2. **Clone the Repository:**
     ```bash
-    git clone https://github.com/himisir/bangla-rag-system.git
-    cd bangla-rag-system
+    git clone https://github.com/himisir/bangla-rag-pipeline.git
+    cd bangla-rag-pipeline
     ```
 3. **Install Required Libraries:**
     ```bash
