@@ -1,0 +1,9 @@
+transformers
+bitsandbytes 
+peft 
+accelerate 
+chromadb
+langchain 
+langchain-community
+sentence_transformers
+argparse
