@@ -54,7 +54,7 @@ argparse
    - Create a text file (e.g., `bangla_corpus.txt`) with the Bangla text you want to use.
 2. **Run the RAG Pipeline:**
     ```bash
-    python main.py --corpus_path path/to/bangla_corpus.txt
+    python main.py --text_file_path path/to/bangla_corpus.txt
     ```
 3. **Interact with the System:**
    - Type your question and press Enter.
