@@ -14,19 +14,20 @@ from rich.panel import Panel
 from tqdm import tqdm
 import warnings
 
+warnings.filterwarnings("ignore")
+
 
 class BanglaRAGChain:
     """
     Bangla Retrieval-Augmented Generation (RAG) Chain for question answering.
 
-    This class uses a HuggingFace language model for text generation, a Chroma vector database for
+    This class uses a HuggingFace/local language model for text generation, a Chroma vector database for
     document retrieval, and a custom prompt template to create a RAG chain that can generate
     responses to user queries in Bengali.
     """
 
     def __init__(self):
         """Initializes the BanglaRAGChain with default parameters."""
-        warnings.filterwarnings("ignore")
         self._device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.chat_model_id = None
         self.embed_model_id = None
@@ -232,7 +233,7 @@ class BanglaRAGChain:
                 torch_dtype=torch.float16,
                 truncation=True,
                 # generation_config=config, //Disabled for now, causing issues.
-                device_map="auto", 
+                device_map="auto",
             )
             self._llm = HuggingFacePipeline(pipeline=pipe)
             rprint(Panel("[bold green]LLM initialized successfully!", expand=False))

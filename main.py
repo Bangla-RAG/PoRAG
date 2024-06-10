@@ -1,9 +1,11 @@
 import argparse
 import logging
-from src.brain import BanglaRAGChain
+from rag_pipeline import BanglaRAGChain
+import warnings
 
+warnings.filterwarnings("ignore")
 # Default constants for the script
-DEFAULT_CHAT_MODEL_ID = "asif00/bangla-llama-4bit"
+DEFAULT_CHAT_MODEL_ID = "hassanaliemon/bn_rag_llama3-8b"
 DEFAULT_EMBED_MODEL_ID = "l3cube-pune/bengali-sentence-similarity-sbert"
 DEFAULT_K = 4
 DEFAULT_TOP_K = 50

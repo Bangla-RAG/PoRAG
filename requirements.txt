@@ -7,3 +7,4 @@ langchain
 langchain-community
 sentence_transformers
 argparse
+rich
