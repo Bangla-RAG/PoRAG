@@ -114,9 +114,9 @@ You can change these values in the `main.py` script.
 
 ## Contribution and Feedback
 
-# We welcome contributions! If you have suggestions, bug reports, or enhancements, please open an issue or submit a pull request.
+We welcome contributions! If you have suggestions, bug reports, or enhancements, please open an issue or submit a pull request.
 
-### Contributors
+### Top Contributors
 [![LinkedIn: Abdullah Al Asif](https://img.shields.io/badge/LinkedIn-Abdullah%20Al%20Asif-blue)](https://www.linkedin.com/in/abdullahalasif-bd/) [Abdullah Al Asif](https://github.com/himisir)
 
 [![LinkedIn: Hasan Ali Emon](https://img.shields.io/badge/LinkedIn-Hasan%20Ali%20Emon-blue)](https://www.linkedin.com/in/hassan-ali-emon/) [Hasan Ali Emon](https://github.com/hassanaliemon)
