@@ -1,6 +1,6 @@
 import argparse
 import logging
-from rag_pipeline import BanglaRAGChain
+from porag import BanglaRAGChain
 import warnings
 
 warnings.filterwarnings("ignore")
@@ -8,13 +8,14 @@ warnings.filterwarnings("ignore")
 DEFAULT_CHAT_MODEL_ID = "hassanaliemon/bn_rag_llama3-8b"
 DEFAULT_EMBED_MODEL_ID = "l3cube-pune/bengali-sentence-similarity-sbert"
 DEFAULT_K = 4
-DEFAULT_TOP_K = 50
+DEFAULT_TOP_K = 2
 DEFAULT_TOP_P = 0.6
-DEFAULT_TEMPERATURE = 0.9
+DEFAULT_TEMPERATURE = 0.6
 DEFAULT_CHUNK_SIZE = 500
 DEFAULT_CHUNK_OVERLAP = 150
 DEFAULT_MAX_NEW_TOKENS = 256
 DEFAULT_TEST_PATH = "test.txt"
+DEFAULT_QUANTIZE_VALUE = True
 DEFAULT_HF_TOKEN = None
 
 
@@ -85,6 +86,12 @@ def main():
         help="The txt file path to the text file",
     )
     parser.add_argument(
+        "--quantization",
+        type=bool,
+        default=DEFAULT_QUANTIZE_VALUE,
+        help="Whether to enable quantization(4bit) or not. Defaults to True.",
+    )
+    parser.add_argument(
         "--hf_token",
         type=str,
         default=DEFAULT_HF_TOKEN,
@@ -114,6 +121,7 @@ def main():
             chunk_overlap=args.chunk_overlap,
             hf_token=args.hf_token,
             max_new_tokens=args.max_new_tokens,
+            quantization=False,
         )
         logging.info(
             f"RAG model loaded successfully: chat_model={args.chat_model}, embed_model={args.embed_model}"

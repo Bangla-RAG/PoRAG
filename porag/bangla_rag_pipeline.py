@@ -1,6 +1,12 @@
 import os
 import torch
-from transformers import AutoTokenizer, AutoModelForCausalLM, pipeline, GenerationConfig
+from transformers import (
+    AutoTokenizer,
+    AutoModelForCausalLM,
+    pipeline,
+    GenerationConfig,
+    BitsAndBytesConfig,
+)
 from langchain_core.prompts import PromptTemplate
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.embeddings import HuggingFaceEmbeddings
@@ -13,8 +19,11 @@ from rich import print as rprint
 from rich.panel import Panel
 from tqdm import tqdm
 import warnings
+import re
 
 warnings.filterwarnings("ignore")
+
+CACHE_DIR = "./models"
 
 
 class BanglaRAGChain:
@@ -35,7 +44,8 @@ class BanglaRAGChain:
         self.max_new_tokens = 1024
         self.chunk_size = 500
         self.chunk_overlap = 150
-        self.text_file_path = ""
+        self.text_path = ""
+        self.quantization = True
         self.temperature = 0.9
         self.top_p = 0.6
         self.top_k = 50
@@ -54,12 +64,13 @@ class BanglaRAGChain:
         self,
         chat_model_id,
         embed_model_id,
-        text_file_path,
+        text_path,
+        quantization=True,
         k=4,
-        top_k=50,
+        top_k=2,
         top_p=0.6,
         max_new_tokens=1024,
-        temperature=0.9,
+        temperature=0.6,
         chunk_size=500,
         chunk_overlap=150,
         hf_token=None,
@@ -70,7 +81,8 @@ class BanglaRAGChain:
         Args:
             chat_model_id (str): The Hugging Face model ID for the chat model.
             embed_model_id (str): The Hugging Face model ID for the embedding model.
-            text_file_path (str): Path to the text file to be indexed.
+            text_path (str): Path to the text file to be indexed.
+            quantization (bool): Whether to quantization the model or not
             k (int): The number of documents to retrieve.
             top_k (int): The top_k parameter for the generation configuration.
             top_p (float): The top_p parameter for the generation configuration.
@@ -88,7 +100,8 @@ class BanglaRAGChain:
         self.temperature = temperature
         self.chunk_size = chunk_size
         self.chunk_overlap = chunk_overlap
-        self.text_file_path = text_file_path
+        self.text_path = text_path
+        self.quantization = quantization
         self.max_new_tokens = max_new_tokens
         self.hf_token = hf_token
 
@@ -116,17 +129,39 @@ class BanglaRAGChain:
         """Loads the chat model and tokenizer."""
         try:
             self.tokenizer = AutoTokenizer.from_pretrained(self.chat_model_id)
-            self.chat_model = AutoModelForCausalLM.from_pretrained(
-                self.chat_model_id, device_map="auto"
-            )
+            bnb_config = None
+            if self.quantization:
+                bnb_config = BitsAndBytesConfig(
+                    load_in_4bit=True,
+                    bnb_4bit_use_double_quant=True,
+                    bnb_4bit_quant_type="nf4",
+                    bnb_4bit_compute_dtype=torch.float16,
+                )
+                rprint(Panel("[bold green]Applying 4bit quantization...", expand=False))
+                self.chat_model = AutoModelForCausalLM.from_pretrained(
+                    self.chat_model_id,
+                    torch_dtype=torch.float16,
+                    low_cpu_mem_usage=True,
+                    quantization_config=bnb_config,
+                    device_map="auto",
+                    cache_dir=CACHE_DIR,
+                )
+            else:
+                self.chat_model = AutoModelForCausalLM.from_pretrained(
+                    self.chat_model_id,
+                    torch_dtype=torch.float16,
+                    low_cpu_mem_usage=True,
+                    device_map="auto",
+                    cache_dir=CACHE_DIR,
+                )
             rprint(Panel("[bold green]Models loaded successfully!", expand=False))
         except Exception as e:
-            print(f"Error loading chat model: {e}")
+            rprint(Panel(f"[red]Error loading chat model: {e}", expand=False))
 
     def _create_document(self):
         """Splits the input text into chunks using RecursiveCharacterTextSplitter."""
         try:
-            with open(self.text_file_path, "r", encoding="utf-8") as file:
+            with open(self.text_path, "r", encoding="utf-8") as file:
                 self._text_content = file.read()
             character_splitter = RecursiveCharacterTextSplitter(
                 separators=["!", "?", "।"],
@@ -147,7 +182,7 @@ class BanglaRAGChain:
                     print(f"Chunk {i}: {chunk}")
             rprint(Panel("[bold green]Document created successfully!", expand=False))
         except Exception as e:
-            print(f"Chunking failed: {e}")
+            rprint(Panel(f"[red]Chunking failed: {e}", expand=False))
 
     def _update_chroma_db(self):
         """Updates the Chroma vector database with the text chunks."""
@@ -161,7 +196,7 @@ class BanglaRAGChain:
                 Panel("[bold green]Chroma database updated successfully!", expand=False)
             )
         except Exception as e:
-            print(f"Vector DB initialization failed: {e}")
+            rprint(Panel(f"[red]Vector DB initialization failed: {e}", expand=False))
 
     def _create_chain(self):
         """Creates the retrieval-augmented generation (RAG) chain."""
@@ -175,7 +210,6 @@ class BanglaRAGChain:
 
         ### Response:
         """
-
         prompt_template = ChatPromptTemplate(
             input_variables=["question", "context"],
             output_parser=None,
@@ -212,19 +246,20 @@ class BanglaRAGChain:
             self._chain = rag_chain_with_source
             rprint(Panel("[bold green]RAG chain created successfully!", expand=False))
         except Exception as e:
-            print(f"RAG chain initialization failed: {e}")
+            rprint(Panel(f"[red]RAG chain initialization failed: {e}", expand=False))
 
     def _get_llm(self):
         """Initializes the language model for the generation."""
         try:
-            generation_kwargs = {}
             config = GenerationConfig(
                 do_sample=True,
                 temperature=self.temperature,
                 max_new_tokens=self.max_new_tokens,
                 top_p=self.top_p,
                 top_k=self.top_k,
-                **generation_kwargs,
+                eos_token_id=self.tokenizer.eos_token_id,
+                pad_token_id=self.tokenizer.eos_token_id,
+                bos_tokn_id=self.tokenizer.bos_token_id,
             )
             pipe = pipeline(
                 "text-generation",
@@ -232,13 +267,13 @@ class BanglaRAGChain:
                 tokenizer=self.tokenizer,
                 torch_dtype=torch.float16,
                 truncation=True,
-                # generation_config=config, //Disabled for now, causing issues.
                 device_map="auto",
+                generation_config=config,  # Disabled for now, causing issues.
             )
             self._llm = HuggingFacePipeline(pipeline=pipe)
             rprint(Panel("[bold green]LLM initialized successfully!", expand=False))
         except Exception as e:
-            print(f"LLM initialization failed: {e}")
+            rprint(Panel(f"[red]LLM initialization failed: {e}", expand=False))
 
     def _get_retriever(self):
         """Initializes the retriever for document retrieval."""
@@ -250,11 +285,15 @@ class BanglaRAGChain:
                 Panel("[bold green]Retriever initialized successfully!", expand=False)
             )
         except Exception as e:
-            print(f"Retriever initialization failed: {e}")
+            rprint(Panel(f"[red]Retriever initialization failed: {e}", expand=False))
 
     def _format_docs(self, docs):
         """Formats the retrieved documents into a single string."""
         return "\n\n".join(doc.page_content for doc in docs)
+
+    def _clean_up(self, messages):
+        messages = re.sub("[^A-Za-z]+", "", messages)
+        return messages
 
     def get_response(self, query):
         """
@@ -272,7 +311,10 @@ class BanglaRAGChain:
                 "### Response:"
             )
             final_answer = response["answer"][response_start:].strip()
+            if self._clean_up(final_answer):
+                self.get_response(query)
+                
             return final_answer, response["context"]
         except Exception as e:
-            print(f"Answer generation failed: {e}")
+            rprint(Panel(f"[red]Answer generation failed: {e}", expand=False))
             return None, None

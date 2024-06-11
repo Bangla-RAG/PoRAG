@@ -19,16 +19,12 @@ Welcome to the **Bangla Retrieval-Augmented Generation (RAG) Pipeline**! This re
 - **Vector Store:** [ChromaDB](https://www.trychroma.com/)
 - **Data Ingestion:** Currently supports text (.txt) files only due to the lack of reliable Bengali PDF parsing tools.
 
-## Limitations
-
-- **PDF Parsing:** Currently, only text (.txt) files are supported due to the lack of reliable Bengali PDF parsing tools.
-- **Model Performance:** The performance depends heavily on the quality of your chosen LLM, embedding model and your Bengali text corpus and the chosen models.
-
 ## Configurability
 
 - **Customizable LLM Integration:** Supports Hugging Face or local LLMs compatible with Transformers.
 - **Flexible Embedding:** Supports embedding models compatible with Sentence Transformers (embedding dimension: 768).
 - **Fine-Grained Control:** Adjust `max_new_tokens`, `top_p`, `top_k`, `temperature`, `chunk_size`, `chunk_overlap`, and `k`.
+- **Toggle Quantization mode:** Pass `--quantization` argument to toggle between different types of model including LoRA and 4bit quantization.
 
 ## Installation
 
@@ -80,29 +76,35 @@ rich
 
 - **Default Chat Model:** `hassanaliemon/bn_rag_llama3-8b`
 - **Default Embedding Model:** `l3cube-pune/bengali-sentence-similarity-sbert`
-- **Default `k`:** 4 (number of documents to retrieve)
-- **Default `top_k`:** 50 (for chat model)
-- **Default `top_p`:** 0.6 (for chat model)
-- **Default `temperature`:** 0.9 (for chat model)
-- **Default `chunk_size`:** 500 (for text splitting)
-- **Default `chunk_overlap`:** 150 (for text splitting)
-- **Default `max_new_tokens`:** 1024 (maximum length of the response messages)
+- **Default `k`:** `4` (number of documents to retrieve)
+- **Default `top_k`:** `2` (for chat model)
+- **Default `top_p`:** `0.6` (for chat model)
+- **Default `temperature`:** `0.6` (for chat model)
+- **Default `chunk_size`:** `500` (for text splitting)
+- **Default `chunk_overlap`:** `150` (for text splitting)
+- **Default `max_new_tokens`:** `1024` (maximum length of the response messages)
+- **Default `quantization`:** `False` (sets `load_in_4bit` boolean)
 
 You can change these values in the `main.py` script.
 
 ## Key Milestones
 
 - **Default LLM:** Trained a LLaMA-3 8B model `hassanaliemon/bn_rag_llama3-8b` for context-based QA.
-- **Embedding Model:** Tested `sagorsarker/bangla-bert-base`, `csebuetnlp/banglabert`, and found `l3cube-pune/bengali-sentence-similarity-sbert` to be effective.
+- **Embedding Model:** Tested `sagorsarker/bangla-bert-base`, `csebuetnlp/banglabert`, and found `l3cube-pune/bengali-sentence-similarity-sbert` to be most effective.
 - **Retrieval Pipeline:** Implemented Langchain Retrieval pipeline and tested with our fine-tuned LLM and embedding model.
 - **Ingestion System:** Settled on text files after testing several PDF parsing solutions.
 - **Question Answering Chat Loop:** Developed a multi-turn chat system for terminal testing.
 - **Generation Configuration Control:** Attempted to use generation config in the LLM pipeline.
-- **Model Testing:** Tested with the following models:
+- **Model Testing:** Tested with the following models(quantized and lora versions):
   1. [`asif00/bangla-llama`](https://huggingface.co/asif00/bangla-llama)
-  2. [`KillerShoaib/llama-3-8b-bangla-4bit`](https://huggingface.co/KillerShoaib/llama-3-8b-bangla-4bit)
+  2. [`hassanaliemon/bn_rag_llama3-8b`](https://huggingface.co/hassanaliemon/bn_rag_llama3-8b)
   3. [`asif00/mistral-bangla`](https://huggingface.co/asif00/mistral-bangla)
-  4. [`hassanaliemon/bn_rag_llama3-8b`](https://huggingface.co/hassanaliemon/bn_rag_llama3-8b)
+  4. [`KillerShoaib/llama-3-8b-bangla-4bit`](https://huggingface.co/KillerShoaib/llama-3-8b-bangla-4bit)
+
+## Limitations
+
+- **PDF Parsing:** Currently, only text (.txt) files are supported due to the lack of reliable Bengali PDF parsing tools.
+- **Model Performance:** The performance depends heavily on the quality of your chosen LLM, embedding model and your Bengali text corpus.
 
 ## Future Steps
 
