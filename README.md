@@ -1,4 +1,4 @@
-# Bangla Retrieval-Augmented Generation (RAG) Pipeline
+# PoRAG (পরাগ), Bangla Retrieval-Augmented Generation (RAG) Pipeline
 ![Banner](/banner.png)
 
 [![LinkedIn: Abdullah Al Asif](https://img.shields.io/badge/LinkedIn-Abdullah%20Al%20Asif-blue)](https://www.linkedin.com/in/abdullahalasif-bd/)
@@ -23,7 +23,7 @@ Welcome to the **Bangla Retrieval-Augmented Generation (RAG) Pipeline**! This re
 
 - **Customizable LLM Integration:** Supports Hugging Face or local LLMs compatible with Transformers.
 - **Flexible Embedding:** Supports embedding models compatible with Sentence Transformers (embedding dimension: 768).
-- **Fine-Grained Control:** Adjust `max_new_tokens`, `top_p`, `top_k`, `temperature`, `chunk_size`, `chunk_overlap`, and `k`.
+- **Hyperparameter Control:** Adjust `max_new_tokens`, `top_p`, `top_k`, `temperature`, `chunk_size`, `chunk_overlap`, and `k`.
 - **Toggle Quantization mode:** Pass `--quantization` argument to toggle between different types of model including LoRA and 4bit quantization.
 
 ## Installation
@@ -104,7 +104,9 @@ You can change these values in the `main.py` script.
 ## Limitations
 
 - **PDF Parsing:** Currently, only text (.txt) files are supported due to the lack of reliable Bengali PDF parsing tools.
-- **Model Performance:** The performance depends heavily on the quality of your chosen LLM, embedding model and your Bengali text corpus.
+- **Quality of answers:** The qualities of answer depends heavily on the quality of your chosen LLM, embedding model and your Bengali text corpus.
+- **Scarcity of Pre-trained models:** As of now, we do not have a high fidelity Bengali LLM Pre-trained models available for QA tasks, which makes it difficult to achieve impressive RAG performance. Overall performance may very depending on the model we use.  
+
 
 ## Future Steps
 
