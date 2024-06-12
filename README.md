@@ -32,7 +32,7 @@ Welcome to the **Bangla Retrieval-Augmented Generation (RAG) Pipeline**! This re
 2. **Clone the Repository:**
     ```bash
     git clone https://github.com/Bangla-RAG/PoRAG.git
-    cd porag
+    cd PoRAG
     ```
 3. **Install Required Libraries:**
     ```bash
@@ -61,7 +61,7 @@ rich
 1. **Prepare Your Bangla Text Corpus:** Create a text file (e.g., `text.txt`) with the Bengali text you want to use.
 2. **Run the RAG Pipeline:**
     ```bash
-    python main.py --text_path text.txt
+    python main.py --text_path test.txt
     ```
 3. **Interact with the System:** Type your question and press Enter to get a response based on the retrieved information.
 
