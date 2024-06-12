@@ -266,7 +266,6 @@ class BanglaRAGChain:
                 model=self.chat_model,
                 tokenizer=self.tokenizer,
                 torch_dtype=torch.float16,
-                truncation=True,
                 device_map="auto",
                 generation_config=config,  # Disabled for now, causing issues.
             )
@@ -313,8 +312,8 @@ class BanglaRAGChain:
             final_answer = response["answer"][response_start:].strip()
             if self._clean_up(final_answer):
                 self.get_response(query)
-                
-            return final_answer, response["context"]
+
+            return final_answer, self._format_docs(response["context"])
         except Exception as e:
             rprint(Panel(f"[red]Answer generation failed: {e}", expand=False))
             return None, None
