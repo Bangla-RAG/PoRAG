@@ -58,7 +58,7 @@ rich
 
 ## Running the Pipeline
 
-1. **Prepare Your Bangla Text Corpus:** Create a text file (e.g., `text.txt`) with the Bengali text you want to use.
+1. **Prepare Your Bangla Text Corpus:** Create a text file (e.g., `test.txt`) with the Bengali text you want to use.
 2. **Run the RAG Pipeline:**
     ```bash
     python main.py --text_path test.txt

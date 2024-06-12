@@ -45,7 +45,7 @@ class BanglaRAGChain:
         self.chunk_size = 500
         self.chunk_overlap = 150
         self.text_path = ""
-        self.quantization = True
+        self.quantization = None
         self.temperature = 0.9
         self.top_p = 0.6
         self.top_k = 50
@@ -65,7 +65,7 @@ class BanglaRAGChain:
         chat_model_id,
         embed_model_id,
         text_path,
-        quantization=True,
+        quantization,
         k=4,
         top_k=2,
         top_p=0.6,

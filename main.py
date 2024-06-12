@@ -14,8 +14,8 @@ DEFAULT_TEMPERATURE = 0.6
 DEFAULT_CHUNK_SIZE = 500
 DEFAULT_CHUNK_OVERLAP = 150
 DEFAULT_MAX_NEW_TOKENS = 256
-DEFAULT_TEST_PATH = "test.txt"
-DEFAULT_QUANTIZE_VALUE = True
+DEFAULT_TEXT_PATH = "test.txt"
+DEFAULT_QUANTIZE_VALUE = False
 DEFAULT_HF_TOKEN = None
 
 
@@ -121,7 +121,7 @@ def main():
             chunk_overlap=args.chunk_overlap,
             hf_token=args.hf_token,
             max_new_tokens=args.max_new_tokens,
-            quantization=False,
+            quantization=args.quantization,
         )
         logging.info(
             f"RAG model loaded successfully: chat_model={args.chat_model}, embed_model={args.embed_model}"
