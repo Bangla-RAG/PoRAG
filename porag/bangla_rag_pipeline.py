@@ -82,7 +82,7 @@ class BanglaRAGChain:
             chat_model_id (str): The Hugging Face model ID for the chat model.
             embed_model_id (str): The Hugging Face model ID for the embedding model.
             text_path (str): Path to the text file to be indexed.
-            quantization (bool): Whether to quantization the model or not
+            quantization (bool): Whether to quantization the model or not.
             k (int): The number of documents to retrieve.
             top_k (int): The top_k parameter for the generation configuration.
             top_p (float): The top_p parameter for the generation configuration.

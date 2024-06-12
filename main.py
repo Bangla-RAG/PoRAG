@@ -112,7 +112,7 @@ def main():
         rag_chain.load(
             chat_model_id=args.chat_model,
             embed_model_id=args.embed_model,
-            text_file_path=args.text_path,
+            text_path=args.text_path,
             k=args.k,
             top_k=args.top_k,
             top_p=args.top_p,
