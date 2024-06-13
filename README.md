@@ -43,16 +43,16 @@ Welcome to the **Bangla Retrieval-Augmented Generation (RAG) Pipeline**! This re
 <summary>Click to view example `requirements.txt`</summary>
 
 ```txt
-transformers
-bitsandbytes 
-peft 
-accelerate 
-chromadb
-langchain 
-langchain-community
-sentence_transformers
-argparse
-rich
+langchain==0.2.3
+langchain-community==0.2.4
+langchain-core==0.2.5
+chromadb==0.5.0
+accelerate==0.31.0
+peft==0.11.1
+transformers==4.40.1
+bitsandbytes==0.41.3
+sentence-transformers==3.0.1
+rich==13.7.1
 ```
 </details>
 
