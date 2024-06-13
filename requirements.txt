@@ -1,5 +1,5 @@
 transformers
-bitsandbytes 
+bitsandbytes==0.41.3
 peft 
 accelerate 
 chromadb
