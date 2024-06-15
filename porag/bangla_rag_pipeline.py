@@ -108,7 +108,7 @@ class BanglaRAGChain:
         if self.hf_token is not None:
             os.environ["HF_TOKEN"] = str(self.hf_token)
 
-        rprint(Panel("[bold green]Loading models...", expand=False))
+        rprint(Panel("[bold green]Loading chat models...", expand=False))
         self._load_models()
 
         rprint(Panel("[bold green]Creating document...", expand=False))
@@ -146,6 +146,8 @@ class BanglaRAGChain:
                     device_map="auto",
                     cache_dir=CACHE_DIR,
                 )
+                rprint(Panel("[bold green]Applied 4bit quantization successfully", expand=False))
+
             else:
                 self.chat_model = AutoModelForCausalLM.from_pretrained(
                     self.chat_model_id,
@@ -154,7 +156,7 @@ class BanglaRAGChain:
                     device_map="auto",
                     cache_dir=CACHE_DIR,
                 )
-            rprint(Panel("[bold green]Models loaded successfully!", expand=False))
+            rprint(Panel("[bold green]Chat Model loaded successfully!", expand=False))
         except Exception as e:
             rprint(Panel(f"[red]Error loading chat model: {e}", expand=False))
 
@@ -187,10 +189,17 @@ class BanglaRAGChain:
     def _update_chroma_db(self):
         """Updates the Chroma vector database with the text chunks."""
         try:
-            model_kwargs = {"device": self._device}
-            embeddings = HuggingFaceEmbeddings(
-                model_name=self.embed_model_id, model_kwargs=model_kwargs
-            )
+            try:
+                rprint(Panel(f"[bold green]Loading embedding model...",expand=False))
+                model_kwargs = {"device": self._device}
+                embeddings = HuggingFaceEmbeddings(
+                    model_name=self.embed_model_id, model_kwargs=model_kwargs
+                )
+                rprint(Panel(f"[bold green]Loaded embedding model successfully!", expand=False))
+            except Exception as e:
+                rprint(Panel("f[red]embedding model loading failed: {e}", expand=False))
+                
+            
             self._db = Chroma.from_texts(texts=self._documents, embedding=embeddings)
             rprint(
                 Panel("[bold green]Chroma database updated successfully!", expand=False)

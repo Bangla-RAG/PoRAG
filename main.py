@@ -14,10 +14,7 @@ DEFAULT_TEMPERATURE = 0.6
 DEFAULT_CHUNK_SIZE = 500
 DEFAULT_CHUNK_OVERLAP = 150
 DEFAULT_MAX_NEW_TOKENS = 256
-DEFAULT_TEXT_PATH = "test.txt"
-DEFAULT_QUANTIZE_VALUE = False
 DEFAULT_HF_TOKEN = None
-DEFAULT_SHOW_CONTEXT_VALUE = True
 
 
 def main():
@@ -87,16 +84,14 @@ def main():
         help="The txt file path to the text file",
     )
     parser.add_argument(
-        "--quantization",
-        type=bool,
-        default=DEFAULT_QUANTIZE_VALUE,
-        help="Whether to enable quantization(4bit) or not. Defaults to True.",
+        "--show_context",
+        action="store_true",
+        help="Whether to show the retrieved context or not.",
     )
     parser.add_argument(
-        "--show_context",
-        type=bool,
-        default=DEFAULT_SHOW_CONTEXT_VALUE,
-        help="Whether to show the retrieved context or not. Defaults to True.",
+        "--quantization",
+        action="store_true",
+        help="Whether to enable quantization(4bit) or not.",
     )
     parser.add_argument(
         "--hf_token",

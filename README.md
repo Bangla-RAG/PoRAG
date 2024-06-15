@@ -82,8 +82,8 @@ rich==13.7.1
 - **Default `temperature`:** `0.6` (for chat model)
 - **Default `chunk_size`:** `500` (for text splitting)
 - **Default `chunk_overlap`:** `150` (for text splitting)
-- **Default `max_new_tokens`:** `1024` (maximum length of the response messages)
-- **Default `show_context`:** `true` (shows retrieved contexts along with answers)
+- **Default `max_new_tokens`:** `256` (maximum length of the response messages)
+- **Default `show_context`:** `False` (shows retrieved contexts along with answers)
 - **Default `quantization`:** `False` (sets `load_in_4bit` boolean)
 
 You can change these values in the `main.py` script.
