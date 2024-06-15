@@ -17,6 +17,7 @@ DEFAULT_MAX_NEW_TOKENS = 256
 DEFAULT_TEXT_PATH = "test.txt"
 DEFAULT_QUANTIZE_VALUE = False
 DEFAULT_HF_TOKEN = None
+DEFAULT_SHOW_CONTEXT_VALUE = True
 
 
 def main():
@@ -92,6 +93,12 @@ def main():
         help="Whether to enable quantization(4bit) or not. Defaults to True.",
     )
     parser.add_argument(
+        "--show_context",
+        type=bool,
+        default=DEFAULT_SHOW_CONTEXT_VALUE,
+        help="Whether to show the retrieved context or not. Defaults to True.",
+    )
+    parser.add_argument(
         "--hf_token",
         type=str,
         default=DEFAULT_HF_TOKEN,
@@ -135,7 +142,8 @@ def main():
                 break
             try:
                 answer, context = rag_chain.get_response(query)
-                print(f"প্রসঙ্গঃ {context}\n------------------------\n")
+                if args.show_context:
+                    print(f"প্রসঙ্গঃ {context}\n------------------------\n")
                 print(f"উত্তর: {answer}")
             except Exception as e:
                 logging.error(f"Couldn't generate an answer: {e}")

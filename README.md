@@ -83,6 +83,7 @@ rich==13.7.1
 - **Default `chunk_size`:** `500` (for text splitting)
 - **Default `chunk_overlap`:** `150` (for text splitting)
 - **Default `max_new_tokens`:** `1024` (maximum length of the response messages)
+- **Default `show_context`:** `true` (shows retrieved contexts along with answers)
 - **Default `quantization`:** `False` (sets `load_in_4bit` boolean)
 
 You can change these values in the `main.py` script.
