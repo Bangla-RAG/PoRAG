@@ -72,21 +72,100 @@ rich==13.7.1
 উত্তর: রবীন্দ্রনাথ ঠাকুরের জন্মস্থান কলকাতার জোড়াসাঁকোর 'ঠাকুরবাড়ি'তে।
 ```
 
-## Configuration (Default)
+# Parameters description
+You can pass these arguments and adjust their values during each runs.
 
-- **Default Chat Model:** `hassanaliemon/bn_rag_llama3-8b`
-- **Default Embedding Model:** `l3cube-pune/bengali-sentence-similarity-sbert`
-- **Default `k`:** `4` (number of documents to retrieve)
-- **Default `top_k`:** `2` (for chat model)
-- **Default `top_p`:** `0.6` (for chat model)
-- **Default `temperature`:** `0.6` (for chat model)
-- **Default `chunk_size`:** `500` (for text splitting)
-- **Default `chunk_overlap`:** `150` (for text splitting)
-- **Default `max_new_tokens`:** `256` (maximum length of the response messages)
-- **Default `show_context`:** `False` (shows retrieved contexts along with answers)
-- **Default `quantization`:** `False` (sets `load_in_4bit` boolean)
+<table>
+    <thead>
+        <tr>
+            <th>Flag Name</th>
+            <th>Type</th>
+            <th width="50%">Description</th>
+            <th width="50%">Instructions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><code>chat_model</code></td>
+            <td>str</td>
+            <td>The ID of the chat model. It can be either a Hugging Face model ID or a local path to the model.</td>
+            <td>Use the model ID from the HuggingFace model card or provide the local path to the model. The default value is set to <code>"hassanaliemon/bn_rag_llama3-8b"</code>.</td>
+        </tr>
+        <tr>
+            <td><code>embed_model</code></td>
+            <td>str</td>
+            <td>The ID of the embedding model. It can be either a Hugging Face model ID or a local path to the model.</td>
+            <td>Use the model ID from the HuggingFace model card or provide the local path to the model. The default value is set to <code>"l3cube-pune/bengali-sentence-similarity-sbert"</code>.</td>
+        </tr>
+        <tr>
+            <td><code>k</code></td>
+            <td>int</td>
+            <td>The number of documents to retrieve.</td>
+            <td>The default value is set to <code>4</code>.</td>
+        </tr>
+        <tr>
+            <td><code>top_k</code></td>
+            <td>int</td>
+            <td>The top_k parameter for the chat model.</td>
+            <td>The default value is set to <code>2</code>.</td>
+        </tr>
+        <tr>
+            <td><code>top_p</code></td>
+            <td>float</td>
+            <td>The top_p parameter for the chat model.</td>
+            <td>The default value is set to <code>0.6</code>.</td>
+        </tr>
+        <tr>
+            <td><code>temperature</code></td>
+            <td>float</td>
+            <td>The temperature parameter for the chat model.</td>
+            <td>The default value is set to <code>0.6</code>.</td>
+        </tr>
+        <tr>
+            <td><code>max_new_tokens</code></td>
+            <td>int</td>
+            <td>The maximum number of new tokens to generate.</td>
+            <td>The default value is set to <code>256</code>.</td>
+        </tr>
+        <tr>
+            <td><code>chunk_size</code></td>
+            <td>int</td>
+            <td>The chunk size for text splitting.</td>
+            <td>The default value is set to <code>500</code>.</td>
+        </tr>
+        <tr>
+            <td><code>chunk_overlap</code></td>
+            <td>int</td>
+            <td>The chunk overlap for text splitting.</td>
+            <td>The default value is set to <code>150</code>.</td>
+        </tr>
+        <tr>
+            <td><code>text_path</code></td>
+            <td>str</td>
+            <td>The txt file path to the text file.</td>
+            <td>This is a required field. Provide the path to the text file you want to use.</td>
+        </tr>
+        <tr>
+            <td><code>show_context</code></td>
+            <td>bool</td>
+            <td>Whether to show the retrieved context or not.</td>
+            <td>Use <code>--show_context</code> flag to enable this feature.</td>
+        </tr>
+        <tr>
+            <td><code>quantization</code></td>
+            <td>bool</td>
+            <td>Whether to enable quantization(4bit) or not.</td>
+            <td>Use <code>--quantization</code> flag to enable this feature.</td>
+        </tr>
+        <tr>
+            <td><code>hf_token</code></td>
+            <td>str</td>
+            <td>Your Hugging Face API token.</td>
+            <td>The default value is set to <code>None</code>. Provide your Hugging Face API token if necessary.</td>
+        </tr>
+    </tbody>
+</table>
 
-You can change these values in the `main.py` script.
 
 ## Key Milestones
 
